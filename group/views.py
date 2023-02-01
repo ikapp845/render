@@ -33,10 +33,14 @@ def create_group(request):
 def join_group(request):
   req = request.data
 
-  group = Group.objects.get(id = req["group"])
-  user = Profile.objects.get(name = req["username"])
-  member = Members.objects.create(group = group,user = user)
-  member.save()
+  try:
+    member = Members.objects.get(id = req["group"],name = req["username"])
+    return Respone("User already in group")
+  except:
+    group = Group.objects.get(id = req["group"])
+    user = Profile.objects.get(name = req["username"])
+    member = Members.objects.create(group = group,user = user)
+    member.save()
 
   return Response("Success")
 
