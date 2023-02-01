@@ -24,11 +24,22 @@ class UserDataUpload(APIView):
         profile.save()
       return Response("successfully created")
 
+@api_view(["POST"])
+def post(request):
+  req = request.data
+  with transaction.atomic():
+    try:
+      profile = Profile.objects.get(name = req["username"])
+      return Response("The user already exists")
+    except:
+      profile = Profile.objects.create(name = req["username"],gender = req["gender"],email = req["email"])
+      profile.save()
+    return Response("successfully created")
+
 
 
 @api_view(["POST"])
 def check_username(request):
-  print("sakn")
   req = request.data
   
   try:
