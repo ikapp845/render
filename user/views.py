@@ -33,9 +33,9 @@ def check_username(request):
   
   try:
     name = Profile.objects.get(name = req["username"])
-    return Response("Success")
-  except:
     return Response("Fail")
+  except:
+    return Response("Success")
 
     
 @api_view(["GET"])
