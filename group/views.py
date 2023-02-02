@@ -97,7 +97,7 @@ def group_members(request,group):
 @api_view(["POST"])
 def leave(request):
   req = request.data
-  group = Group.objects.get(name =req["group"] )
+  group = Group.objects.get(id =req["group"] )
   user = Profile.objects.get(name = req["username"])
   mem = Members.objects.get(group = group,user = user)
   mem.delete()
