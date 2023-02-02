@@ -32,17 +32,22 @@ def create_group(request):
 @api_view(['POST'])
 def join_group(request):
   req = request.data
-
   try:
-    member = Members.objects.get(id = req["group"],name = req["username"])
-    return Respone("User already in group")
-  except:
     group = Group.objects.get(id = req["group"])
     user = Profile.objects.get(name = req["username"])
+  except:
+    return Response("Group does not exist")
+
+  try:
+    member = Members.objects.get(group = group,user= user)
+    print(member)
+    return Respone("User already in group")
+  except:
     member = Members.objects.create(group = group,user = user)
     member.save()
+    return Response("Success")
 
-  return Response("Success")
+
 
 @api_view(["GET"])
 def group_question(request,group,username):
@@ -96,3 +101,10 @@ def leave(request):
   mem = Members.objects.get(group = group,user = user)
   mem.delete()
   return Response("removed")
+
+@api_view(["GET"])
+def user_groups(request,username):
+  user = Profile.objects.get(name = username)
+  members = Members.objects.filter(user = user)
+  serializer = UserGroupsSerializer(members,many  = True)
+  return Response(serializer.data)

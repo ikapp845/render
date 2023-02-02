@@ -67,3 +67,13 @@ class MemberSerializer(serializers.ModelSerializer):
     return serializer.data
     
 
+class UserGroupsSerializer(serializers.ModelSerializer):
+  group = serializers.SerializerMethodField("get_groups")
+  class Meta:
+    model = Members
+    fields = ["group"]
+
+  def get_groups(self,member):
+    group = member.group
+    serializer = GroupSerializer(group,many = False)
+    return serializer.data

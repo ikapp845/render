@@ -33,8 +33,6 @@ class Members(models.Model):
   group = models.ForeignKey(Group,on_delete = models.CASCADE)
   user = models.ForeignKey(Profile,on_delete = models.CASCADE)
 
-  def __str__(self):
-    return self.user.name + " " + self.group.name
 
 
 class GroupQuestion(models.Model):
