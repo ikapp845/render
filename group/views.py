@@ -101,7 +101,6 @@ def leave(request):
   user = Profile.objects.get(name = req["username"])
   mem = Members.objects.get(group = group,user = user)
   mem.delete()
-  
   return Response("removed")
 
 @api_view(["GET"])
