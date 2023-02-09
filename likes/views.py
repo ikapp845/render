@@ -32,13 +32,13 @@ def get_likes(request,username):
 @api_view(["GET"])
 def get_like_count(request,group,question):
   group = Group.objects.get(name = group)
-  question = Question.objects.get(question = question)
+  question = Question.objects.get(id = question)
   members = Members.objects.filter(group = group)
   result = {"total":0}
   print(members)
   for items in members:
     user = items.user
-    likes = Like.objects.filter(group = group,question = question,user_to = user)
+    likes = Like.objects.filter(group = group,id = question,user_to = user)
     result[user.name] = {"count":likes.count()}
     result["total"] += 1
 
