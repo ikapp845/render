@@ -52,7 +52,7 @@ def join_group(request):
 
 @api_view(["GET"])
 def group_question(request,group,username):
-  gp = Group.objects.get(name = group)
+  gp = Group.objects.get(id = group)
   user = Profile.objects.get(name = username)
   gqs = GroupQuestion.objects.filter(group = gp)
   if not gqs:
