@@ -15,7 +15,7 @@ def like(request):
   req = request.data
   user1 = Profile.objects.get(name = req["username1"])
   user2 = Profile.objects.get(name = req["username2"])
-  question = Question.objects.get(question = req["question"])
+  question = Question.objects.get(id = req["question"])
   group = Group.objects.get(name = req["group"])
   like = Like.objects.create(user_from = user1,user_to =user2,question = question,group = group )
   like.save()
