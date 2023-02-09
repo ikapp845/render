@@ -20,7 +20,7 @@ from .serializers import UserGroupsSerializer
 def create_group(request):
   req = request.data
 
-  group = Group.objects.create(name = req["name"])
+  group = Group.objects.create(id = req["name"])
   group.save()
 
   user = Profile.objects.get(name = req["username"])
@@ -87,7 +87,7 @@ def group_question(request,group,username):
 # Create your views here.
 @api_view(["GET"])
 def group_members(request,group):
-  group = Group.objects.get(name = group)
+  group = Group.objects.get(id = group)
   members = Members.objects.filter(group = group)
   serializer = MemberSerializer(members,many = True)
   return Response(serializer.data)
