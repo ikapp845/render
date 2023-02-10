@@ -8,6 +8,7 @@ from group.serializers import ProfileSerializer
 from datetime import datetime
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
+from group.serializers import UserSerializer
 # Create your views here.
 
 class UserDataUpload(APIView):
@@ -22,7 +23,8 @@ class UserDataUpload(APIView):
       except:
         profile = Profile.objects.create(name = req["username"],gender = req["gender"],email = req["email"],image_url = req["image"])
         profile.save()
-      return Response("successfully created")
+    serializer = UserSerializer(profile,many = False)
+    return Response(serializer.data)
 
 @api_view(["POST"])
 def post(request):
@@ -34,7 +36,8 @@ def post(request):
     except:
       profile = Profile.objects.create(name = req["username"],gender = req["gender"],email = req["email"])
       profile.save()
-    return Response("successfully created")
+    serializer = UserSerializer(profile,many = False)
+    return Response(serializer.data)
 
 
 

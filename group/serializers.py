@@ -10,6 +10,11 @@ class GroupSerializer(serializers.ModelSerializer):
     model = Group
     fields = "__all__"
 
+class UserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Profile
+    fields = "__all__"
+
 class ProfileSerializer(serializers.ModelSerializer):
   groups = serializers.SerializerMethodField("get_groups")
   last_like = serializers.SerializerMethodField("get_last_like")
