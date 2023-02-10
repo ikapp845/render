@@ -39,7 +39,7 @@ def get_like_count(request,group,question):
   print(members)
   for items in members:
     user = items.user
-    likes = Like.objects.filter(group = group,id = question,user_to = user)
+    likes = Like.objects.filter(group = group,question = question,user_to = user)
     result[user.name] = {"count":likes.count()}
     result["total"] += 1
 
