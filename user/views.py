@@ -62,7 +62,8 @@ def delete_account(request,username):
 def check_email(request,mail):
   try:
     user = Profile.objects.get(email = mail)
-    return Response("yes user")
+    serializer = UserSerializer(user,many= False)
+    return Response(serializer.data)
   except:
     return Response("no user")
 

@@ -20,7 +20,7 @@ from .serializers import UserGroupsSerializer
 def create_group(request):
   req = request.data
 
-  group = Group.objects.create(id = req["name"])
+  group = Group.objects.create(name= req["name"])
   group.save()
 
   user = Profile.objects.get(name = req["username"])
