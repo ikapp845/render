@@ -13,6 +13,7 @@ from .serializers import GroupQuestionSerializer,MemberSerializer
 from datetime import datetime
 from django.utils.timezone import localtime 
 from .serializers import UserGroupsSerializer
+from django.utils import timezone
 
 
 
@@ -20,10 +21,10 @@ from .serializers import UserGroupsSerializer
 def create_group(request):
   req = request.data
 
-  group = Group.objects.create(name= request.POST.get("name",False))
+  group = Group.objects.create(name= req["name"])
   group.save()
 
-  user = Profile.objects.get(name = request.POST.get("username",False))
+  user = Profile.objects.get(name = req["username"])
   member = Members.objects.create(group = group,user = user)
   member.save()
 
@@ -48,7 +49,20 @@ def join_group(request):
     member.save()
     return Response("Success")
 
-
+def compare_dates(desired,now):
+  if desired.year == now.year:
+    if desired.month == now.month:
+      if desired.day == now.day:
+        if (now.hour - desired.hour) >= 1:
+          return True
+        else:
+          return False
+      else:
+        return True
+    else:
+      return True
+  else:
+    return True
 
 @api_view(["GET"])
 def group_question(request,group,username):
@@ -64,11 +78,13 @@ def group_question(request,group,username):
   else:
     gq = gqs[0]
     desired_datetime = localtime(gq.time)
-    then = datetime.now().hour -  desired_datetime.hour
-    if (then) >= 1:
+    now = timezone.now()
+    if compare_dates(desired_datetime,now):
           attended = GroupQuestion.objects.filter(group = gp)
           attended.delete()
           GroupQuestion.objects.filter(group = gp).delete()
+          questionattended = QuestionAttended.objects.filter(group = group)
+          questionattended.delete()
           question = Question.objects.order_by("?")[:10]
           for items in question:
             gq = GroupQuestion.objects.create(group = gp,question = items)

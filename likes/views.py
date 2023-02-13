@@ -7,12 +7,11 @@ from .models import Like
 from user.models import Profile
 from question.models import Question
 from .serializer import LikeSerializer
-from group.models import Members,Group
+from group.models import Members,Group,Questionattended
 
 # {"username1":"","username2":"","question":""}
 @api_view(["POST"])
 def like(request):
-  print((request.data))
   req = request.data
   user1 = Profile.objects.get(name = req["username1"])
   user2 = Profile.objects.get(name = req["username2"])
@@ -20,6 +19,8 @@ def like(request):
   group = Group.objects.get(id = req["group"])
   like = Like.objects.create(user_from = user1,user_to =user2,question = question,group = group )
   like.save()
+  attended = Questionattended.objects.create(user = user1,question = question,group = group)
+  attended.save()
   return Response("Liked")
 
 @api_view(["GET"])

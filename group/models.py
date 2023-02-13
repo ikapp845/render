@@ -23,9 +23,6 @@ class Group(models.Model):
   id = models.CharField(max_length=6, default=key_generator, unique=True, editable=False,primary_key = True)
 
 
-  def __str__(self):
-    return self.name + " " + self.id
-
 
 
 class Members(models.Model):
