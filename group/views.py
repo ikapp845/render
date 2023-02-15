@@ -53,7 +53,6 @@ def compare_dates(desired,now):
   if desired.year == now.year:
     if desired.month == now.month:
       if desired.day == now.day:
-        print(now,desired)
         if (now.hour - desired.hour) >= 1:
           return True
         else:
@@ -80,7 +79,6 @@ def group_question(request,group,username):
     gq = gqs[0]
     desired_datetime = gq.time
     now = timezone.now()
-    print(compare_dates(desired_datetime,now))
     if compare_dates(desired_datetime,now):
           attended = GroupQuestion.objects.filter(group = gp)
           attended.delete()
@@ -98,6 +96,8 @@ def group_question(request,group,username):
       qat = Questionattended.objects.get(user = user,group = gp,question = items.question)
     except:
       question.append([items.question.id,items.question.question])
+  if question == []:
+    return (String(now.minute - desired.minute) + " " + String(now.second - desired.second))
 
   return Response(question)
 

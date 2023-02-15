@@ -46,7 +46,7 @@ def check_username(request):
   req = request.data
   
   try:
-    name = Profile.objects.get(name = req["username"])
+    name = Profile.objects.get(email = req["username"])
     return Response("Fail")
   except:
     return Response("Success")
